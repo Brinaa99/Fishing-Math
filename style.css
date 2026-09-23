@@ -1,0 +1,614 @@
+/* ==========================================================================
+   FISHING MATH — LIGHT RETRO GAME CONSOLE STYLING
+   Standard 3 Mathematics: Fractions & Place Value
+   Visual Theme: Classic Retro Console & Handheld (Medium Navy + Off-white Cream)
+   ========================================================================== */
+
+:root {
+  --primary-font: 'Fredoka', 'Outfit', system-ui, -apple-system, sans-serif;
+  --display-font: 'Fredoka', 'Outfit', system-ui, sans-serif;
+
+  /* Retro Console Palette */
+  --bg-dark: #2d3f57;
+  --panel-bg: #fdfbf7;
+  --panel-border: #152234;
+  --panel-item-bg: #ffffff;
+
+  --accent-gold: #f59e0b;
+  --accent-teal: #0284c7;
+  --accent-green: #16a34a;
+  --accent-red: #dc2626;
+  --accent-blue: #2563eb;
+  --accent-orange: #ea580c;
+
+  --text-main: #132238;
+  --text-dim: #5a6e85;
+  --text-white: #ffffff;
+
+  --shadow-retro: 0 4px 0 #152234;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-dark);
+  font-family: var(--primary-font);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+}
+
+#game-app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #3a506d 0%, var(--bg-dark) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Main Underwater Frame (Solid Console Chassis) */
+#game-container {
+  width: min(96vw, 1380px);
+  height: min(94vh, 880px);
+  min-height: 600px;
+  position: relative;
+  background: #0284c7;
+  box-shadow: 0 8px 0 #152234, 0 16px 30px rgba(0, 0, 0, 0.4);
+  border-radius: 18px;
+  border: 3px solid #152234;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   TOP HUD PANEL (Cream Retro Console)
+   ========================================================================== */
+.hud-panel {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 20;
+  gap: 8px;
+  pointer-events: none;
+  background: var(--panel-bg);
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: 2.5px solid var(--panel-border);
+  box-shadow: 0 3px 0 var(--panel-border);
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--panel-item-bg);
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1.5px solid var(--panel-border);
+  pointer-events: auto;
+}
+
+.hud-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hud-label {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hud-value {
+  font-family: var(--display-font);
+  font-size: 1.05rem;
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--text-main);
+}
+
+#score-display {
+  color: var(--accent-gold);
+}
+
+#caught-display {
+  color: var(--accent-green);
+}
+
+.lives-hearts {
+  font-size: 1.05rem;
+  letter-spacing: 2px;
+  display: flex;
+  gap: 2px;
+}
+
+.lives-hearts .heart {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  display: inline-block;
+}
+
+.lives-hearts .heart.lost {
+  filter: grayscale(1);
+  opacity: 0.25;
+  transform: scale(0.8);
+}
+
+.hud-nav-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.hud-btn {
+  background: #ffffff;
+  border: 2px solid var(--panel-border);
+  color: var(--text-main);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-family: var(--primary-font);
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 2px 0 var(--panel-border);
+  transition: all 0.12s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hud-btn:hover {
+  background: #fef08a;
+  transform: translateY(-1px);
+}
+
+.hud-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.btn-profile {
+  background: #dbeafe;
+}
+
+/* ==========================================================================
+   QUESTION BILLBOARD (Cream Retro Dock Card)
+   ========================================================================== */
+.question-card, #question-billboard {
+  position: absolute;
+  top: 66px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  background: var(--panel-bg);
+  border: 2.5px solid var(--panel-border);
+  box-shadow: 0 4px 0 var(--panel-border);
+  padding: 6px 20px;
+  border-radius: 14px;
+  text-align: center;
+  min-width: 260px;
+  pointer-events: none;
+}
+
+.question-badge {
+  font-family: var(--display-font);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--accent-teal);
+  margin-bottom: 1px;
+}
+
+.question-math {
+  font-family: var(--display-font);
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--text-main);
+}
+
+.question-hint {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+/* ==========================================================================
+   CANVAS VIEWPORT
+   ========================================================================== */
+.canvas-viewport {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 5;
+}
+
+#game-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ==========================================================================
+   MOBILE TOUCH BAR
+   ========================================================================== */
+.mobile-touch-bar {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 25;
+  pointer-events: none;
+  gap: 8px;
+}
+
+.touch-btn {
+  pointer-events: auto;
+  background: #ffffff;
+  border: 2.5px solid var(--panel-border);
+  border-radius: 12px;
+  color: var(--text-main);
+  padding: 10px 18px;
+  font-family: var(--display-font);
+  font-size: 0.85rem;
+  font-weight: 900;
+  box-shadow: 0 4px 0 var(--panel-border);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.touch-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--panel-border);
+}
+
+.btn-cast {
+  background: var(--accent-green);
+  color: #ffffff;
+  flex: 1;
+  max-width: 160px;
+}
+
+/* ==========================================================================
+   OVERLAY SCREENS (Cream Retro Cartridge Style)
+   ========================================================================== */
+.overlay-screen {
+  position: absolute;
+  inset: 0;
+  background: rgba(21, 34, 52, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 16px;
+}
+
+.overlay-screen.hidden,
+.hidden {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.overlay-card {
+  background: var(--panel-bg);
+  border: 3px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 24px;
+  width: min(90%, 540px);
+  text-align: center;
+  box-shadow: 0 8px 0 var(--panel-border), 0 16px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-main);
+}
+
+.logo-badge {
+  background: #fef08a;
+  border: 1.5px solid var(--panel-border);
+  color: #854d0e;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 3px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+.game-title {
+  font-family: var(--display-font);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.title-highlight {
+  color: var(--accent-teal);
+}
+
+.game-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.35;
+  max-width: 380px;
+}
+
+.character-preview {
+  margin: 4px 0;
+}
+
+.preview-bubbles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.preview-bubbles .chip {
+  background: #ffffff;
+  border: 1.5px solid var(--panel-border);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text-main);
+  box-shadow: 0 1px 0 var(--panel-border);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.arcade-btn {
+  border: 2px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 9px 24px;
+  font-family: var(--primary-font);
+  font-size: 0.95rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 0 var(--panel-border);
+  transition: all 0.12s ease;
+}
+
+.btn-play {
+  background: var(--accent-green);
+  color: #ffffff;
+}
+
+.btn-play:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: var(--text-main);
+}
+
+.btn-secondary:hover {
+  background: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.btn-home {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.btn-home:hover {
+  background: #fca5a5;
+}
+
+.arcade-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   HOW TO PLAY MODAL
+   ========================================================================== */
+.modal-card {
+  max-width: 580px;
+  text-align: left;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-bottom: 2px solid var(--panel-border);
+  padding-bottom: 8px;
+}
+
+.modal-header h2 {
+  font-family: var(--display-font);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text-main);
+}
+
+.close-btn {
+  background: #ffffff;
+  border: 2px solid var(--panel-border);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 0 var(--panel-border);
+}
+
+.close-btn:hover {
+  background: #fee2e2;
+}
+
+.instructions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  margin: 6px 0;
+}
+
+.instruction-box {
+  background: #ffffff;
+  border: 1.5px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  box-shadow: 0 2px 0 var(--panel-border);
+}
+
+.inst-icon {
+  background: #fef08a;
+  border: 1.5px solid var(--panel-border);
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.75rem;
+  color: #854d0e;
+  flex-shrink: 0;
+}
+
+.inst-content h3 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+
+.inst-content p {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  line-height: 1.3;
+}
+
+.modal-play-btn {
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   END SCREEN & RESULTS
+   ========================================================================== */
+.stars-awarded {
+  display: flex;
+  gap: 8px;
+  font-size: 2.6rem;
+  color: #cbd5e1;
+  margin: 4px 0;
+}
+
+.star-slot.earned {
+  color: var(--accent-gold);
+}
+
+.score-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+.summary-box {
+  background: #ffffff;
+  border: 1.5px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 0 var(--panel-border);
+}
+
+.summary-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.summary-val {
+  font-family: var(--display-font);
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--text-main);
+}
+
+.summary-val.highlight {
+  color: var(--accent-teal);
+}
+
+@media (max-width: 768px) {
+  .mobile-touch-bar {
+    display: flex;
+  }
+  .hud-panel {
+    padding: 4px 8px;
+  }
+  .hud-item {
+    padding: 3px 6px;
+  }
+  .question-card, #question-billboard {
+    top: 56px;
+    padding: 4px 14px;
+    min-width: 220px;
+  }
+  .question-math {
+    font-size: 1.4rem;
+  }
+  .instructions-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,1472 @@
+/* ==========================================================================
+   NUMBERLAND — LIGHT RETRO GAME CONSOLE SHARED SYSTEM (CSS)
+   Visual Theme: Classic Retro Game Console / Handheld
+   Clean, solid, tactile 2D game aesthetics with cream panels & navy outlines
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&family=Press+Start+2P&display=swap');
+
+:root {
+  /* Core Typography */
+  --nl-retro-font: 'Press Start 2P', monospace;
+  --nl-heading-font: 'Fredoka', cursive, sans-serif;
+  --nl-body-font: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --nl-feedback-font: 'Fredoka', 'Outfit', sans-serif;
+
+  /* Palette: Light Retro Console Chassis & Panels */
+  --nl-console-bg: #2d3f57;            /* Medium Navy / Slate Blue Shell */
+  --nl-console-bg-light: #3a506d;      /* Lighter Navy Surface */
+  --nl-console-border: #152234;        /* Dark Navy Console Inset Border */
+  --nl-panel-cream: #fdfbf7;           /* Main Cream Off-White Panel */
+  --nl-panel-cream-dark: #f0ebe1;      /* Secondary Cream / Inset Panel */
+  --nl-panel-beige: #e5dec9;           /* Parchment / Darker Beige */
+  --nl-panel-slate: #e2e8f0;           /* Clean Cool Gray Inset */
+
+  /* High Contrast Text */
+  --nl-text-navy: #132238;             /* Deepest Navy for Primary Text */
+  --nl-text-slate: #3b4e66;            /* Slate Navy for Secondary Text */
+  --nl-text-muted: #627792;            /* Muted Console Navy */
+  --nl-text-white: #ffffff;            /* White on colored buttons */
+
+  /* Controlled Bright Accents (Retro Toys / Handhelds) */
+  --nl-accent-yellow: #f5b800;         /* Classic Game Gold / Yellow */
+  --nl-accent-yellow-dark: #b88600;
+  --nl-accent-red: #e63946;            /* Retro Arcade Red */
+  --nl-accent-red-dark: #ad1d28;
+  --nl-accent-blue: #2563eb;           /* Classic Blue */
+  --nl-accent-blue-dark: #1d4ed8;
+  --nl-accent-green: #16a34a;          /* 1-UP Green */
+  --nl-accent-green-dark: #15803d;
+  --nl-accent-orange: #ea580c;         /* Cartridge Orange */
+  --nl-accent-orange-dark: #c2410c;
+  --nl-accent-purple: #7c3aed;         /* Retro Purple */
+  --nl-accent-purple-dark: #6d28d9;
+
+  /* Feedback Colors (Flat, crisp, no neon blur) */
+  --nl-correct-color: #16a34a;
+  --nl-wrong-color: #dc2626;
+  --nl-score-color: #d97706;
+  --nl-combo-color: #ea580c;
+  --nl-info-color: #2563eb;
+
+  /* Tactile Retro Drop Shadows */
+  --nl-shadow-card: 0 4px 0 var(--nl-console-border);
+  --nl-shadow-btn: 0 3px 0 var(--nl-console-border);
+  --nl-shadow-deep: 0 8px 0 var(--nl-console-border);
+}
+
+.hidden,
+[hidden],
+.overlay-screen.hidden,
+.challenge-modal.hidden,
+.modal-backdrop.hidden {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* ==========================================================================
+   1. SCREEN SHAKE & FLASH EFFECTS (Clean, non-glowing)
+   ========================================================================== */
+.screen-shake {
+  animation: nl-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
+  transform-origin: center center;
+}
+
+@keyframes nl-shake {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(-6px, 4px, 0); }
+  40% { transform: translate3d(6px, -4px, 0); }
+  60% { transform: translate3d(-4px, 2px, 0); }
+  80% { transform: translate3d(4px, -2px, 0); }
+}
+
+.screen-flash-green {
+  animation: nl-flash-green 0.3s ease-out forwards;
+}
+
+@keyframes nl-flash-green {
+  0% { box-shadow: inset 0 0 0 5px #16a34a; }
+  100% { box-shadow: inset 0 0 0 0 transparent; }
+}
+
+.screen-flash-red {
+  animation: nl-flash-red 0.3s ease-out forwards;
+}
+
+@keyframes nl-flash-red {
+  0% { box-shadow: inset 0 0 0 5px #dc2626; }
+  100% { box-shadow: inset 0 0 0 0 transparent; }
+}
+
+/* ==========================================================================
+   2. GENERIC FEEDBACK POPUP WRAPPER
+   ========================================================================== */
+.feedback-popup {
+  position: absolute;
+  z-index: 100;
+  pointer-events: none;
+  font-family: var(--nl-heading-font);
+  font-weight: 800;
+  text-align: center;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+
+/* ==========================================================================
+   3. CORRECT ANSWER FEEDBACK (Crisp Retro Badge)
+   ========================================================================== */
+.correct-feedback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 120;
+  pointer-events: none;
+  font-family: var(--nl-heading-font);
+  text-align: center;
+  animation: nl-correct-pop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.correct-feedback .correct-score {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fef08a;
+  text-shadow: 2px 2px 0 #854d0e, -1px -1px 0 #152234;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.correct-feedback .correct-msg {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: var(--nl-accent-green);
+  padding: 4px 18px;
+  border-radius: 999px;
+  border: 2.5px solid var(--nl-console-border);
+  box-shadow: 0 4px 0 var(--nl-console-border);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@keyframes nl-correct-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30%) scale(0.7);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  40% {
+    transform: translate(-50%, -52%) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -58%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -68%) scale(0.9);
+  }
+}
+
+.feedback-bounce-success {
+  animation: nl-target-bounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
+}
+
+@keyframes nl-target-bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+/* ==========================================================================
+   4. WRONG ANSWER FEEDBACK (Crisp Retro Badge)
+   ========================================================================== */
+.wrong-feedback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 120;
+  pointer-events: none;
+  font-family: var(--nl-heading-font);
+  text-align: center;
+  animation: nl-wrong-pop 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.wrong-feedback .wrong-badge {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: var(--nl-accent-red);
+  padding: 6px 20px;
+  border-radius: 999px;
+  border: 2.5px solid var(--nl-console-border);
+  box-shadow: 0 4px 0 var(--nl-console-border);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@keyframes nl-wrong-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -35%) scale(0.7);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  75% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.9);
+  }
+}
+
+.feedback-shake-wrong {
+  animation: nl-object-wobble 0.35s ease-in-out both !important;
+}
+
+@keyframes nl-object-wobble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px) rotate(-2deg); }
+  50% { transform: translateX(6px) rotate(2deg); }
+  75% { transform: translateX(-3px); }
+}
+
+/* ==========================================================================
+   5. FLOATING SCORE POPUP
+   ========================================================================== */
+.score-popup {
+  position: absolute;
+  z-index: 110;
+  pointer-events: none;
+  font-family: var(--nl-heading-font);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #f59e0b;
+  text-shadow: 2px 2px 0 var(--nl-console-border), -1px -1px 0 var(--nl-console-border);
+  white-space: nowrap;
+  animation: nl-float-up-fade 0.65s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes nl-float-up-fade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.8);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -15px) scale(1.1);
+  }
+  50% {
+    transform: translate(-50%, -28px) scale(1);
+  }
+  80% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -48px) scale(0.85);
+  }
+}
+
+/* ==========================================================================
+   6. LIFE LOST FEEDBACK
+   ========================================================================== */
+.life-lost {
+  position: absolute;
+  z-index: 115;
+  pointer-events: none;
+  font-family: var(--nl-heading-font);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #ef4444;
+  text-shadow: 2px 2px 0 #152234;
+  animation: nl-life-float 0.7s ease-out forwards;
+}
+
+@keyframes nl-life-float {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.7);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -10px) scale(1.1);
+  }
+  70% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -35px) scale(0.8);
+  }
+}
+
+.heart-shaking {
+  animation: nl-heart-break 0.5s ease-in-out forwards !important;
+}
+
+@keyframes nl-heart-break {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.25) rotate(-10deg); }
+  60% { transform: scale(0.85) rotate(10deg); opacity: 0.7; }
+  100% { transform: scale(0.75); opacity: 0.25; filter: grayscale(1); }
+}
+
+/* ==========================================================================
+   7. COMBO POPUP
+   ========================================================================== */
+.combo-popup {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 125;
+  pointer-events: none;
+  font-family: var(--nl-heading-font);
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #ffffff;
+  background: var(--nl-accent-orange);
+  padding: 4px 18px;
+  border-radius: 999px;
+  border: 2.5px solid var(--nl-console-border);
+  box-shadow: 0 4px 0 var(--nl-console-border);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  animation: nl-combo-burst 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@keyframes nl-combo-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30%) scale(0.7);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+  50% {
+    transform: translate(-50%, -52%) scale(1);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -64%) scale(0.85);
+  }
+}
+
+/* ==========================================================================
+   8. CHALLENGE TRANSITION
+   ========================================================================== */
+.challenge-transition {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 130;
+  pointer-events: none;
+  font-family: var(--nl-heading-font);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #ffffff;
+  background: var(--nl-accent-blue);
+  padding: 6px 22px;
+  border-radius: 999px;
+  border: 2.5px solid var(--nl-console-border);
+  box-shadow: 0 4px 0 var(--nl-console-border);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  animation: nl-challenge-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@keyframes nl-challenge-slide {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20%) scale(0.8);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -65%) scale(0.9);
+  }
+}
+
+/* ==========================================================================
+   9. TIMER WARNING
+   ========================================================================== */
+.timer-warning {
+  color: #dc2626 !important;
+  animation: nl-timer-pulse 0.7s ease-in-out infinite alternate !important;
+}
+
+.timer-warning-box {
+  border-color: #dc2626 !important;
+  background: #fee2e2 !important;
+}
+
+@keyframes nl-timer-pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+/* ==========================================================================
+   10. LIGHTWEIGHT DOM PARTICLES (Crisp pixel/geometry)
+   ========================================================================== */
+.particle-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 105;
+}
+
+.particle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 14px;
+  line-height: 1;
+  user-select: none;
+  will-change: transform, opacity;
+  animation: nl-particle-fly var(--p-dur, 0.6s) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes nl-particle-fly {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(var(--p-scale-start, 0.6)) rotate(0deg);
+  }
+  60% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--p-tx, 0px), var(--p-ty, -40px), 0) scale(var(--p-scale-end, 1.1)) rotate(var(--p-rot, 120deg));
+  }
+}
+
+.particle-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--p-color, #f59e0b);
+  border: 1px solid var(--nl-console-border);
+}
+
+.particle-diamond {
+  width: 8px;
+  height: 8px;
+  background: var(--p-color, #2563eb);
+  transform: rotate(45deg);
+  border: 1px solid var(--nl-console-border);
+}
+
+/* ==========================================================================
+   11. ACCESSIBILITY (Prefers Reduced Motion)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .screen-shake,
+  .feedback-shake-wrong,
+  .feedback-bounce-success,
+  .heart-shaking,
+  .timer-warning {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .correct-feedback,
+  .wrong-feedback,
+  .score-popup,
+  .life-lost,
+  .combo-popup,
+  .challenge-transition {
+    animation-duration: 0.2s !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  .particle {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   12. GLOBAL NUMBERLAND MODALS (LIGHT RETRO CONSOLE THEME)
+   ========================================================================== */
+
+/* Universal Modal Overlay Backdrop (Medium Navy tinted, no glowing blur) */
+.nl-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(21, 34, 52, 0.82);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.22s ease, visibility 0.22s ease;
+}
+
+.nl-modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Retro Console Cartridge / Chassis Modal Card (Cream / Off-White) */
+.nl-modal-card {
+  background: var(--nl-panel-cream);
+  border: 3px solid var(--nl-console-border);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 0 var(--nl-console-border), 0 20px 30px rgba(0, 0, 0, 0.35);
+  transform: scale(0.92) translateY(15px);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: var(--nl-text-navy);
+  font-family: var(--nl-body-font);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.nl-modal-backdrop.active .nl-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+/* Modal Header: Crisp Pale Slate with Dark Navy Border */
+.nl-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #eef3f8;
+  border-bottom: 2.5px solid var(--nl-console-border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.nl-modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nl-modal-title-icon {
+  font-size: 24px;
+}
+
+.nl-modal-title {
+  margin: 0;
+  font-family: var(--nl-heading-font);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--nl-text-navy);
+  letter-spacing: 0.02em;
+}
+
+.nl-modal-subtitle {
+  margin: 2px 0 0 0;
+  font-size: 0.82rem;
+  color: var(--nl-text-muted);
+  font-weight: 600;
+}
+
+/* Retro Chunky Close Button */
+.nl-modal-close-btn {
+  background: #fee2e2;
+  border: 2px solid var(--nl-console-border);
+  color: #dc2626;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 2px 0 var(--nl-console-border);
+  transition: all 0.15s ease;
+}
+
+.nl-modal-close-btn:hover {
+  background: #dc2626;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--nl-console-border);
+}
+
+.nl-modal-close-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.nl-modal-body {
+  padding: 18px 22px;
+  overflow-y: auto;
+  color: var(--nl-text-navy);
+}
+
+.nl-modal-footer {
+  padding: 14px 20px;
+  border-top: 2.5px solid var(--nl-console-border);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  background: #f7f4ec;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+/* ==========================================================================
+   13. GLOBAL PROFILE MODAL STYLES (LIGHT RETRO CONSOLE)
+   ========================================================================== */
+.nl-profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #f3eee3;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 0 var(--nl-console-border);
+}
+
+.nl-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.nl-avatar-box {
+  width: 76px;
+  height: 76px;
+  border-radius: 14px;
+  background: #fef08a;
+  border: 2.5px solid var(--nl-console-border);
+  box-shadow: 0 3px 0 var(--nl-console-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.nl-avatar-box:hover {
+  transform: translateY(-2px);
+}
+
+.nl-avatar-edit-tag {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: var(--nl-accent-yellow);
+  color: var(--nl-text-navy);
+  font-family: var(--nl-heading-font);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1.5px solid var(--nl-console-border);
+}
+
+.nl-profile-info {
+  flex-grow: 1;
+}
+
+.nl-profile-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.nl-profile-name-input {
+  background: #ffffff;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 8px;
+  color: var(--nl-text-navy);
+  font-family: var(--nl-heading-font);
+  font-size: 1.15rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  width: 100%;
+  max-width: 200px;
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.nl-profile-name-input:focus {
+  outline: none;
+  border-color: var(--nl-accent-blue);
+  background: #f8fafc;
+}
+
+.nl-profile-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #fef3c7;
+  border: 1.5px solid var(--nl-console-border);
+  color: #92400e;
+  font-family: var(--nl-heading-font);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.nl-level-xp-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nl-level-text-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--nl-heading-font);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.nl-level-badge {
+  color: var(--nl-accent-blue);
+}
+
+.nl-xp-counter {
+  color: var(--nl-text-muted);
+}
+
+.nl-xp-bar-bg {
+  height: 10px;
+  background: #e2e8f0;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.nl-xp-bar-fill {
+  height: 100%;
+  background: var(--nl-accent-green);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+/* Avatar Picker Drawer */
+.nl-avatar-picker {
+  background: #eef3f8;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 16px;
+  animation: nl-fade-in 0.2s ease;
+}
+
+.nl-avatar-opt {
+  font-size: 26px;
+  background: #ffffff;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 10px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 0 var(--nl-console-border);
+  transition: all 0.15s;
+}
+
+.nl-avatar-opt:hover {
+  background: #fef08a;
+  transform: translateY(-2px);
+}
+
+.nl-avatar-opt.selected {
+  background: #fde047;
+  border-color: #152234;
+  transform: scale(1.08);
+}
+
+/* Stats 2x2 Grid (Cream retro boxes) */
+.nl-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.nl-stat-card {
+  background: #ffffff;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 0 var(--nl-console-border);
+  transition: transform 0.15s ease;
+}
+
+.nl-stat-card:hover {
+  transform: translateY(-1px);
+}
+
+.nl-stat-icon-box {
+  font-size: 24px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  border: 1.5px solid var(--nl-console-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nl-stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.nl-stat-label {
+  font-family: var(--nl-heading-font);
+  font-size: 0.72rem;
+  color: var(--nl-text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nl-stat-value {
+  font-family: var(--nl-heading-font);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--nl-text-navy);
+}
+
+.nl-stat-sub {
+  font-size: 0.7rem;
+  color: var(--nl-text-muted);
+  font-weight: 600;
+}
+
+/* Games Breakdown Mini List */
+.nl-games-breakdown {
+  background: #f6f2e9;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.nl-breakdown-title {
+  font-family: var(--nl-heading-font);
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--nl-text-slate);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nl-breakdown-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.nl-game-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 1.5px solid var(--nl-console-border);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.nl-game-item-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--nl-text-navy);
+}
+
+.nl-game-item-stars {
+  font-size: 0.9rem;
+  color: var(--nl-accent-yellow);
+  letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   14. ANIMATED HOW TO PLAY TUTORIAL MODAL
+   ========================================================================== */
+.nl-tutorial-card {
+  max-width: 640px;
+}
+
+.nl-tutorial-step-container {
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nl-step-content {
+  animation: nl-step-enter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes nl-step-enter {
+  0% {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.nl-step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--nl-accent-blue);
+  color: #ffffff;
+  font-family: var(--nl-heading-font);
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1.5px solid var(--nl-console-border);
+  margin-bottom: 8px;
+}
+
+.nl-step-title {
+  font-family: var(--nl-heading-font);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--nl-text-navy);
+  margin: 0 0 4px 0;
+}
+
+.nl-step-desc {
+  font-size: 0.92rem;
+  color: var(--nl-text-slate);
+  line-height: 1.45;
+  margin: 0 0 14px 0;
+}
+
+/* Tutorial Interactive Animation Box */
+.nl-tutorial-anim-box {
+  background: #eef3f8;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 14px;
+  padding: 16px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.nl-anim-games-grid {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.nl-anim-game-pill {
+  background: #ffffff;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-family: var(--nl-heading-font);
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--nl-text-navy);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 0 var(--nl-console-border);
+  transition: all 0.2s;
+}
+
+.nl-anim-game-pill.active {
+  background: #fef08a;
+  transform: translateY(-2px);
+  border-color: var(--nl-console-border);
+}
+
+.nl-anim-equation-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.nl-anim-math-q {
+  font-family: var(--nl-heading-font);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--nl-text-navy);
+}
+
+.nl-anim-choices {
+  display: flex;
+  gap: 8px;
+}
+
+.nl-anim-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: var(--nl-heading-font);
+  font-size: 0.9rem;
+  font-weight: 800;
+  border: 2px solid var(--nl-console-border);
+  background: #ffffff;
+  color: var(--nl-text-navy);
+  box-shadow: 0 2px 0 var(--nl-console-border);
+}
+
+.nl-anim-btn.correct {
+  background: var(--nl-accent-green);
+  color: #ffffff;
+}
+
+.nl-anim-stars-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.nl-anim-star {
+  font-size: 38px;
+  color: var(--nl-accent-yellow);
+  text-shadow: 2px 2px 0 var(--nl-console-border);
+  animation: nl-star-pop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate;
+}
+
+.nl-anim-star:nth-child(2) { animation-delay: 0.2s; }
+.nl-anim-star:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes nl-star-pop {
+  0% { transform: scale(0.85); }
+  100% { transform: scale(1.15); }
+}
+
+.nl-anim-trophy-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 80%;
+}
+
+.nl-anim-trophy-icon {
+  font-size: 38px;
+}
+
+.nl-anim-progress-outer {
+  width: 100%;
+  height: 12px;
+  background: #e2e8f0;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.nl-anim-progress-inner {
+  height: 100%;
+  background: var(--nl-accent-green);
+  animation: nl-fill-progress 2s infinite alternate ease-in-out;
+}
+
+@keyframes nl-fill-progress {
+  0% { width: 15%; }
+  100% { width: 95%; }
+}
+
+/* Tutorial Footer Pagination */
+.nl-tutorial-pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: auto;
+}
+
+.nl-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  border: 1px solid var(--nl-console-border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nl-dot.active {
+  background: var(--nl-accent-blue);
+  width: 20px;
+  border-radius: 999px;
+}
+
+/* ==========================================================================
+   15. UNIVERSAL TACTILE RETRO BUTTONS
+   ========================================================================== */
+.nl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-family: var(--nl-heading-font);
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: 2px solid var(--nl-console-border);
+  box-shadow: 0 3px 0 var(--nl-console-border);
+  transition: all 0.12s ease;
+  text-decoration: none;
+  user-select: none;
+}
+
+.nl-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 var(--nl-console-border);
+}
+
+.nl-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--nl-console-border);
+}
+
+.nl-btn-secondary {
+  background: #ffffff;
+  color: var(--nl-text-navy);
+}
+
+.nl-btn-secondary:hover {
+  background: #f8fafc;
+}
+
+.nl-btn-primary {
+  background: var(--nl-accent-blue);
+  color: #ffffff;
+}
+
+.nl-btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.nl-btn-gold {
+  background: var(--nl-accent-yellow);
+  color: var(--nl-text-navy);
+}
+
+.nl-btn-gold:hover {
+  background: #eab308;
+}
+
+.nl-btn-danger {
+  background: var(--nl-accent-red);
+  color: #ffffff;
+}
+
+@keyframes nl-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   16. UNIVERSAL TOP GLOBAL NAVIGATION / HUD BUTTONS
+   ========================================================================== */
+.nl-global-nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nl-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff !important;
+  border: 2px solid var(--nl-console-border) !important;
+  color: var(--nl-text-navy) !important;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-family: var(--nl-heading-font);
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--nl-console-border);
+  transition: all 0.12s ease;
+  text-decoration: none !important;
+}
+
+.nl-nav-btn:hover {
+  background: #fef08a !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 var(--nl-console-border);
+}
+
+.nl-nav-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--nl-console-border);
+}
+
+.nl-nav-btn.active {
+  background: var(--nl-accent-blue) !important;
+  color: #ffffff !important;
+}
+
+/* Universal Arcade Game HUD Buttons */
+.hud-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hud-btn {
+  background: #ffffff;
+  border: 2px solid var(--nl-console-border);
+  color: var(--nl-text-navy);
+  padding: 4px 10px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--nl-heading-font);
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 0 var(--nl-console-border);
+  transition: all 0.12s ease;
+  text-decoration: none;
+}
+
+.hud-btn:hover {
+  background: #fef08a;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--nl-console-border);
+}
+
+.hud-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   17. UNIVERSAL IN-GAME INSTRUCTIONS / HOW TO PLAY MODAL
+   ========================================================================== */
+.modal-card {
+  max-width: 560px;
+  width: 92%;
+  background: var(--nl-panel-cream);
+  border: 3px solid var(--nl-console-border);
+  border-radius: 18px;
+  box-shadow: 0 10px 0 var(--nl-console-border), 0 20px 30px rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  position: relative;
+  z-index: 200;
+  color: var(--nl-text-navy);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--nl-console-border);
+  padding-bottom: 10px;
+}
+
+.modal-header h2 {
+  font-family: var(--nl-heading-font);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--nl-text-navy);
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.close-btn {
+  background: #fee2e2;
+  border: 2px solid var(--nl-console-border);
+  color: #dc2626;
+  font-size: 1.1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 0 var(--nl-console-border);
+  transition: all 0.12s ease;
+}
+
+.close-btn:hover {
+  background: #dc2626;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.close-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.instructions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.instruction-box {
+  background: #ffffff;
+  border: 2px solid var(--nl-console-border);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  box-shadow: 0 2px 0 var(--nl-console-border);
+}
+
+.inst-icon {
+  font-family: var(--nl-heading-font);
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--nl-accent-blue);
+  background: #e0f2fe;
+  border: 1.5px solid var(--nl-console-border);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.inst-content h3 {
+  font-family: var(--nl-heading-font);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--nl-text-navy);
+  margin: 0 0 2px 0;
+}
+
+.inst-content p {
+  font-size: 0.78rem;
+  color: var(--nl-text-slate);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.modal-play-btn {
+  width: 100%;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .instructions-grid {
+    grid-template-columns: 1fr;
+  }
+  .nl-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .nl-breakdown-list {
+    grid-template-columns: 1fr;
+  }
+  .nl-profile-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+  .nl-profile-name-row {
+    justify-content: center;
+  }
+  .nl-anim-games-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .nl-modal-header {
+    padding: 12px 16px;
+  }
+  .nl-modal-body {
+    padding: 14px 16px;
+  }
+  .nl-modal-footer {
+    padding: 12px 16px;
+  }
+}
