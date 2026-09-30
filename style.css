@@ -1,614 +1,702 @@
 /* ==========================================================================
-   FISHING MATH — LIGHT RETRO GAME CONSOLE STYLING
-   Standard 3 Mathematics: Fractions & Place Value
-   Visual Theme: Classic Retro Console & Handheld (Medium Navy + Off-white Cream)
+   RETRO ARCADE + MODERN CARTOON GAME STYLE — SHARED DESIGN SYSTEM
+   GAME 3: FISHING MATH (SPECIAL NUMBERS REEF)
    ========================================================================== */
 
 :root {
-  --primary-font: 'Fredoka', 'Outfit', system-ui, -apple-system, sans-serif;
-  --display-font: 'Fredoka', 'Outfit', system-ui, sans-serif;
+  /* Core Arcade Palette */
+  --arcade-bg: #091326;
+  --arcade-surface: #0f1d38;
+  --arcade-chassis: #132448;
+  --arcade-border: #1e3a6a;
+  --arcade-border-dark: #070d1a;
+  
+  --arcade-gold: #f59e0b;
+  --arcade-gold-light: #fbbf24;
+  --arcade-gold-dark: #b45309;
+  
+  --arcade-blue: #2563eb;
+  --arcade-blue-light: #38bdf8;
+  --arcade-blue-dark: #1d4ed8;
+  
+  --arcade-red: #ef4444;
+  --arcade-red-dark: #b91c1c;
+  
+  --arcade-green: #10b981;
+  --arcade-green-dark: #047857;
+  
+  --arcade-text-main: #f8fafc;
+  --arcade-text-dim: #94a3b8;
+  --arcade-text-dark: #0f172a;
 
-  /* Retro Console Palette */
-  --bg-dark: #2d3f57;
-  --panel-bg: #fdfbf7;
-  --panel-border: #152234;
-  --panel-item-bg: #ffffff;
+  /* Typography */
+  --font-display: 'Fredoka', cursive, sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
-  --accent-gold: #f59e0b;
-  --accent-teal: #0284c7;
-  --accent-green: #16a34a;
-  --accent-red: #dc2626;
-  --accent-blue: #2563eb;
-  --accent-orange: #ea580c;
-
-  --text-main: #132238;
-  --text-dim: #5a6e85;
-  --text-white: #ffffff;
-
-  --shadow-retro: 0 4px 0 #152234;
+  /* Shadows */
+  --shadow-btn-primary: 0 6px 0 var(--arcade-gold-dark), 0 8px 16px rgba(0,0,0,0.4);
+  --shadow-btn-secondary: 0 5px 0 var(--arcade-blue-dark), 0 8px 16px rgba(0,0,0,0.4);
+  --shadow-box: 0 4px 0 var(--arcade-border-dark), 0 6px 12px rgba(0,0,0,0.3);
 }
 
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
-body, html {
-  width: 100%;
-  height: 100%;
+html, body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: var(--arcade-bg);
+  color: var(--arcade-text-main);
+  font-family: var(--font-body);
   overflow: hidden;
-  background: var(--bg-dark);
-  font-family: var(--primary-font);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-main);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #game-app {
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, #3a506d 0%, var(--bg-dark) 100%);
-  position: relative;
-  overflow: hidden;
+  align-items: center;
 }
 
-/* Main Underwater Frame (Solid Console Chassis) */
 #game-container {
-  width: min(96vw, 1380px);
-  height: min(94vh, 880px);
-  min-height: 600px;
   position: relative;
-  background: #0284c7;
-  box-shadow: 0 8px 0 #152234, 0 16px 30px rgba(0, 0, 0, 0.4);
-  border-radius: 18px;
-  border: 3px solid #152234;
-  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  background: var(--arcade-bg);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 /* ==========================================================================
-   TOP HUD PANEL (Cream Retro Console)
+   1. RETRO ARCADE TOP HUD BAR
    ========================================================================== */
 .hud-panel {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
+  background: var(--arcade-surface);
+  border-bottom: 3px solid var(--arcade-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  padding: 8px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 20;
-  gap: 8px;
-  pointer-events: none;
-  background: var(--panel-bg);
-  padding: 6px 12px;
-  border-radius: 12px;
-  border: 2.5px solid var(--panel-border);
-  box-shadow: 0 3px 0 var(--panel-border);
+  z-index: 10;
+  gap: 12px;
 }
 
-.hud-item {
+.hud-group-left, .hud-group-center, .hud-group-right {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: var(--panel-item-bg);
-  padding: 4px 10px;
-  border-radius: 8px;
-  border: 1.5px solid var(--panel-border);
-  pointer-events: auto;
+  gap: 10px;
 }
 
-.hud-info {
+.hud-box {
+  background: var(--arcade-chassis);
+  border: 2px solid var(--arcade-border);
+  border-radius: 8px;
+  padding: 4px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .hud-label {
-  font-size: 0.62rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
   font-weight: 800;
-  color: var(--text-dim);
-  letter-spacing: 0.05em;
+  color: var(--arcade-text-dim);
+  letter-spacing: 0.6px;
   text-transform: uppercase;
 }
 
 .hud-value {
-  font-family: var(--display-font);
-  font-size: 1.05rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
   font-weight: 900;
+  color: var(--arcade-text-main);
   line-height: 1.1;
-  color: var(--text-main);
 }
 
-#score-display {
-  color: var(--accent-gold);
+.hud-mono {
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
 }
 
-#caught-display {
-  color: var(--accent-green);
+.combo-accent {
+  color: var(--arcade-gold-light);
 }
 
-.lives-hearts {
-  font-size: 1.05rem;
-  letter-spacing: 2px;
+/* Arcade Vector Lives (Hearts) */
+.lives-container {
   display: flex;
-  gap: 2px;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
 }
 
-.lives-hearts .heart {
-  transition: transform 0.2s ease, opacity 0.2s ease;
-  display: inline-block;
-}
-
-.lives-hearts .heart.lost {
-  filter: grayscale(1);
-  opacity: 0.25;
-  transform: scale(0.8);
-}
-
-.hud-nav-actions {
-  display: flex;
-  gap: 6px;
-}
-
-.hud-btn {
-  background: #ffffff;
-  border: 2px solid var(--panel-border);
-  color: var(--text-main);
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-family: var(--primary-font);
-  font-size: 0.82rem;
-  font-weight: 800;
-  cursor: pointer;
-  pointer-events: auto;
-  box-shadow: 0 2px 0 var(--panel-border);
-  transition: all 0.12s ease;
-  text-decoration: none;
+.arcade-heart {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 20px;
+  height: 20px;
 }
 
-.hud-btn:hover {
-  background: #fef08a;
-  transform: translateY(-1px);
+.arcade-heart svg {
+  width: 18px;
+  height: 18px;
 }
 
-.hud-btn:active {
-  transform: translateY(2px);
-  box-shadow: none;
+.arcade-heart.heart-full svg {
+  fill: var(--arcade-red);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
 }
 
-.btn-profile {
-  background: #dbeafe;
+.arcade-heart.heart-empty svg {
+  fill: #334155;
+  opacity: 0.45;
 }
 
-/* ==========================================================================
-   QUESTION BILLBOARD (Cream Retro Dock Card)
-   ========================================================================== */
-.question-card, #question-billboard {
-  position: absolute;
-  top: 66px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 15;
-  background: var(--panel-bg);
-  border: 2.5px solid var(--panel-border);
-  box-shadow: 0 4px 0 var(--panel-border);
-  padding: 6px 20px;
-  border-radius: 14px;
-  text-align: center;
-  min-width: 260px;
-  pointer-events: none;
-}
-
-.question-badge {
-  font-family: var(--display-font);
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: var(--accent-teal);
-  margin-bottom: 1px;
-}
-
-.question-math {
-  font-family: var(--display-font);
-  font-size: 1.75rem;
-  font-weight: 900;
-  color: var(--text-main);
-}
-
-.question-hint {
-  font-size: 0.72rem;
-  color: var(--text-dim);
-  font-weight: 600;
-  margin-top: 1px;
-}
-
-/* ==========================================================================
-   CANVAS VIEWPORT
-   ========================================================================== */
-.canvas-viewport {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+/* Icon Buttons (Sound & Rules) */
+.hud-icon-btn {
+  background: var(--arcade-chassis);
+  border: 2px solid var(--arcade-border);
+  border-radius: 8px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  z-index: 5;
+  color: var(--arcade-text-main);
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--arcade-border-dark);
+  transition: transform 0.1s, box-shadow 0.1s;
 }
 
-#game-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
+.hud-icon-btn:hover {
+  background: #1e3a6a;
+  transform: translateY(-1px);
+}
+
+.hud-icon-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--arcade-border-dark);
 }
 
 /* ==========================================================================
-   MOBILE TOUCH BAR
+   2. ARCADE MISSION BILLBOARD
+   ========================================================================== */
+.arcade-billboard {
+  background: #0b1833;
+  border-bottom: 2px solid var(--arcade-border);
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 5;
+  gap: 3px;
+}
+
+.billboard-top-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.billboard-badge {
+  background: var(--arcade-blue-dark);
+  color: var(--arcade-blue-light);
+  border: 1.5px solid var(--arcade-blue);
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  letter-spacing: 0.5px;
+}
+
+.billboard-quota {
+  background: rgba(245, 158, 11, 0.18);
+  color: var(--arcade-gold-light);
+  border: 1.5px solid var(--arcade-gold);
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+}
+
+.billboard-main-text {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.billboard-sub-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--arcade-text-dim);
+}
+
+/* ==========================================================================
+   3. FULLSCREEN CANVAS VIEWPORT
+   ========================================================================== */
+.canvas-viewport {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   4. MOBILE TOUCH FISHING CONTROLS
    ========================================================================== */
 .mobile-touch-bar {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  right: 12px;
-  display: none;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 25;
-  pointer-events: none;
-  gap: 8px;
+  display: flex;
+  background: var(--arcade-surface);
+  border-top: 3px solid var(--arcade-border);
+  padding: 8px 14px;
+  gap: 10px;
+  z-index: 10;
 }
 
 .touch-btn {
-  pointer-events: auto;
-  background: #ffffff;
-  border: 2.5px solid var(--panel-border);
-  border-radius: 12px;
-  color: var(--text-main);
-  padding: 10px 18px;
-  font-family: var(--display-font);
-  font-size: 0.85rem;
+  flex: 1;
+  background: linear-gradient(180deg, #1e3a6a, #0f1d38);
+  border: 2px solid var(--arcade-border);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 1rem;
   font-weight: 900;
-  box-shadow: 0 4px 0 var(--panel-border);
+  padding: 12px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: transform 0.1s;
+  box-shadow: 0 4px 0 var(--arcade-border-dark);
 }
 
 .touch-btn:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 var(--panel-border);
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--arcade-border-dark);
 }
 
-.btn-cast {
-  background: var(--accent-green);
-  color: #ffffff;
-  flex: 1;
-  max-width: 160px;
+.btn-cast-main {
+  background: linear-gradient(180deg, #f59e0b, #b45309);
+  color: #451a03;
+  box-shadow: 0 4px 0 #78350f;
 }
 
 /* ==========================================================================
-   OVERLAY SCREENS (Cream Retro Cartridge Style)
+   5. TOAST HINT BANNER
+   ========================================================================== */
+.arcade-toast {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--arcade-surface);
+  border: 2px solid var(--arcade-border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 20;
+  max-width: 90%;
+  animation: slideToast 0.3s ease-out;
+}
+
+.arcade-toast.hidden {
+  display: none !important;
+}
+
+.toast-accent-bar {
+  width: 4px;
+  height: 28px;
+  background: var(--arcade-gold);
+  border-radius: 2px;
+}
+
+.toast-title {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--arcade-gold-light);
+  letter-spacing: 0.5px;
+}
+
+.toast-text {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+@keyframes slideToast {
+  from { transform: translate(-50%, 20px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* ==========================================================================
+   6. OVERLAY MODALS
    ========================================================================== */
 .overlay-screen {
   position: absolute;
-  inset: 0;
-  background: rgba(21, 34, 52, 0.85);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(5, 10, 22, 0.88);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50;
-  padding: 16px;
+  padding: 20px;
 }
 
-.overlay-screen.hidden,
-.hidden {
+.overlay-screen.hidden {
   display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
 }
 
-.overlay-card {
-  background: var(--panel-bg);
-  border: 3px solid var(--panel-border);
+.arcade-modal {
+  background: #0d1a36;
+  border: 3px solid var(--arcade-border);
   border-radius: 16px;
-  padding: 24px;
-  width: min(90%, 540px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), inset 0 2px 0 rgba(255,255,255,0.1);
+  padding: 28px 32px;
+  max-width: 520px;
+  width: 100%;
   text-align: center;
-  box-shadow: 0 8px 0 var(--panel-border), 0 16px 30px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  color: var(--text-main);
+  gap: 16px;
 }
 
-.logo-badge {
-  background: #fef08a;
-  border: 1.5px solid var(--panel-border);
-  color: #854d0e;
-  font-size: 0.72rem;
+.modal-arcade-header {
+  display: flex;
+  justify-content: center;
+}
+
+.arcade-badge {
+  background: var(--arcade-chassis);
+  border: 2px solid var(--arcade-border);
+  color: var(--arcade-blue-light);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
   font-weight: 900;
   padding: 3px 12px;
   border-radius: 20px;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.8px;
 }
 
-.game-title {
-  font-family: var(--display-font);
-  font-size: 2.2rem;
+.badge-gold {
+  color: var(--arcade-gold-light);
+  border-color: var(--arcade-gold);
+}
+
+.arcade-title {
+  font-family: var(--font-display);
+  font-size: 3.2rem;
   font-weight: 900;
-  color: var(--text-main);
   line-height: 1;
+  color: #ffffff;
+  letter-spacing: 1px;
+  text-shadow: 
+    0 2px 0 #1e3a6a,
+    0 4px 0 #132448,
+    0 6px 0 #070d1a,
+    0 8px 16px rgba(0,0,0,0.6);
 }
 
-.title-highlight {
-  color: var(--accent-teal);
+.title-sm {
+  font-size: 2.2rem;
 }
 
-.game-subtitle {
-  font-size: 0.88rem;
-  color: var(--text-dim);
-  line-height: 1.35;
-  max-width: 380px;
+.title-pop {
+  color: var(--arcade-gold-light);
+  margin-left: 6px;
 }
 
-.character-preview {
-  margin: 4px 0;
-}
-
-.preview-bubbles {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
-}
-
-.preview-bubbles .chip {
-  background: #ffffff;
-  border: 1.5px solid var(--panel-border);
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 0.78rem;
+.arcade-subtitle-pill {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1.5px solid var(--arcade-blue-light);
+  color: var(--arcade-blue-light);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
   font-weight: 800;
-  color: var(--text-main);
-  box-shadow: 0 1px 0 var(--panel-border);
+  padding: 4px 14px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
 }
 
-.action-buttons {
+.arcade-desc {
+  font-size: 0.95rem;
+  color: var(--arcade-text-dim);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.arcade-actions {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 12px;
   width: 100%;
+  justify-content: center;
+  margin-top: 8px;
 }
 
 .arcade-btn {
-  border: 2px solid var(--panel-border);
-  border-radius: 10px;
-  padding: 9px 24px;
-  font-family: var(--primary-font);
-  font-size: 0.95rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
   font-weight: 900;
+  letter-spacing: 0.6px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  border: none;
   cursor: pointer;
-  text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 3px 0 var(--panel-border);
-  transition: all 0.12s ease;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  min-width: 140px;
 }
 
-.btn-play {
-  background: var(--accent-green);
-  color: #ffffff;
+.btn-primary {
+  background: linear-gradient(180deg, #fcd34d 0%, #f59e0b 100%);
+  color: #451a03;
+  box-shadow: var(--shadow-btn-primary);
 }
 
-.btn-play:hover {
-  background: #15803d;
-  transform: translateY(-1px);
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 var(--arcade-gold-dark), 0 12px 20px rgba(0,0,0,0.45);
+}
+
+.btn-primary:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--arcade-gold-dark);
 }
 
 .btn-secondary {
-  background: #ffffff;
-  color: var(--text-main);
+  background: linear-gradient(180deg, #38bdf8 0%, #2563eb 100%);
+  color: #ffffff;
+  box-shadow: var(--shadow-btn-secondary);
 }
 
 .btn-secondary:hover {
-  background: #f1f5f9;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 var(--arcade-blue-dark), 0 12px 20px rgba(0,0,0,0.45);
 }
 
-.btn-home {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-.btn-home:hover {
-  background: #fca5a5;
-}
-
-.arcade-btn:active {
-  transform: translateY(2px);
-  box-shadow: none;
+.btn-secondary:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--arcade-blue-dark);
 }
 
 /* ==========================================================================
-   HOW TO PLAY MODAL
+   7. COUNTDOWN & INSTRUCTIONS
    ========================================================================== */
-.modal-card {
-  max-width: 580px;
-  text-align: left;
+.countdown-modal {
+  background: var(--arcade-surface);
+  border: 3px solid var(--arcade-border);
+  border-radius: 20px;
+  padding: 32px 48px;
+  text-align: center;
+  box-shadow: 0 16px 36px rgba(0,0,0,0.7);
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  border-bottom: 2px solid var(--panel-border);
-  padding-bottom: 8px;
-}
-
-.modal-header h2 {
-  font-family: var(--display-font);
-  font-size: 1.4rem;
+.countdown-number {
+  font-family: var(--font-display);
+  font-size: 5rem;
   font-weight: 900;
-  color: var(--text-main);
+  color: var(--arcade-gold-light);
+  line-height: 1;
+  text-shadow: 0 4px 0 var(--arcade-gold-dark);
+  animation: pulseDigit 0.75s infinite;
 }
 
-.close-btn {
-  background: #ffffff;
-  border: 2px solid var(--panel-border);
-  border-radius: 8px;
-  width: 32px;
-  height: 32px;
-  font-size: 1rem;
-  font-weight: 900;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 0 var(--panel-border);
-}
-
-.close-btn:hover {
-  background: #fee2e2;
-}
-
-.instructions-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  width: 100%;
-  margin: 6px 0;
-}
-
-.instruction-box {
-  background: #ffffff;
-  border: 1.5px solid var(--panel-border);
-  border-radius: 10px;
-  padding: 10px;
-  display: flex;
-  gap: 8px;
-  box-shadow: 0 2px 0 var(--panel-border);
-}
-
-.inst-icon {
-  background: #fef08a;
-  border: 1.5px solid var(--panel-border);
-  border-radius: 6px;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 0.75rem;
-  color: #854d0e;
-  flex-shrink: 0;
-}
-
-.inst-content h3 {
-  font-size: 0.85rem;
+.countdown-label {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
   font-weight: 800;
-  color: var(--text-main);
-  margin-bottom: 2px;
+  color: #ffffff;
+  margin-top: 6px;
 }
 
-.inst-content p {
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  line-height: 1.3;
+@keyframes pulseDigit {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-.modal-play-btn {
-  width: 100%;
-  margin-top: 4px;
+.instructions-modal {
+  max-width: 600px;
 }
 
-/* ==========================================================================
-   END SCREEN & RESULTS
-   ========================================================================== */
-.stars-awarded {
-  display: flex;
-  gap: 8px;
-  font-size: 2.6rem;
-  color: #cbd5e1;
-  margin: 4px 0;
+.modal-heading {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #ffffff;
 }
 
-.star-slot.earned {
-  color: var(--accent-gold);
-}
-
-.score-summary-grid {
+.instruction-cards-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
   width: 100%;
 }
 
-.summary-box {
-  background: #ffffff;
-  border: 1.5px solid var(--panel-border);
+.inst-card {
+  background: var(--arcade-chassis);
+  border: 2px solid var(--arcade-border);
   border-radius: 10px;
-  padding: 8px;
+  padding: 14px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 2px 0 var(--panel-border);
+  text-align: center;
+  gap: 6px;
 }
 
-.summary-label {
+.inst-step-num {
+  background: var(--arcade-blue-dark);
+  border: 2px solid var(--arcade-blue-light);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 900;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inst-card-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--arcade-gold-light);
+  letter-spacing: 0.4px;
+}
+
+.inst-card p {
+  font-size: 0.75rem;
+  color: var(--arcade-text-dim);
+  line-height: 1.3;
+}
+
+/* ==========================================================================
+   8. GAME OVER / STARS & REWARDS
+   ========================================================================== */
+.stars-display-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.arcade-star {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arcade-star svg {
+  width: 40px;
+  height: 40px;
+  fill: #334155;
+}
+
+.arcade-star.star-active svg {
+  fill: var(--arcade-gold-light);
+  filter: drop-shadow(0 2px 6px rgba(245, 158, 11, 0.6));
+}
+
+.stats-scoreboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.stat-cell {
+  background: var(--arcade-chassis);
+  border: 2px solid var(--arcade-border);
+  border-radius: 8px;
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-family: var(--font-display);
   font-size: 0.65rem;
   font-weight: 800;
-  color: var(--text-dim);
-  text-transform: uppercase;
+  color: var(--arcade-text-dim);
 }
 
-.summary-val {
-  font-family: var(--display-font);
-  font-size: 1.2rem;
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
   font-weight: 900;
-  color: var(--text-main);
+  color: #ffffff;
 }
 
-.summary-val.highlight {
-  color: var(--accent-teal);
-}
-
-@media (max-width: 768px) {
-  .mobile-touch-bar {
-    display: flex;
-  }
+/* ==========================================================================
+   9. RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 640px) {
   .hud-panel {
-    padding: 4px 8px;
+    padding: 6px 10px;
+    gap: 6px;
   }
-  .hud-item {
-    padding: 3px 6px;
+  .hud-box {
+    padding: 2px 6px;
   }
-  .question-card, #question-billboard {
-    top: 56px;
-    padding: 4px 14px;
-    min-width: 220px;
+  .hud-label {
+    font-size: 0.6rem;
   }
-  .question-math {
-    font-size: 1.4rem;
+  .hud-value {
+    font-size: 0.95rem;
   }
-  .instructions-grid {
+  .billboard-main-text {
+    font-size: 1.1rem;
+  }
+  .arcade-title {
+    font-size: 2.3rem;
+  }
+  .instruction-cards-grid {
     grid-template-columns: 1fr;
+  }
+  .stats-scoreboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .arcade-actions {
+    flex-direction: column;
   }
 }
